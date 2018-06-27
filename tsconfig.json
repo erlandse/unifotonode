@@ -1,0 +1,33 @@
+/*{
+    "compilerOptions": {
+        "outDir": ".",
+        "allowJs": true,
+        "target": "es5"
+    },
+    "files": [
+        "./transform.ts",
+        "./Server.ts"
+    ]
+}
+*/
+/*
+
+*/
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "outDir": "",
+        "sourceMap": true
+    },
+    "files": [
+        "./transform.ts",
+        "./Server.ts",
+        "./tools.ts"
+        
+    ],
+       "exclude": [
+        "node_modules"
+    ]
+}
