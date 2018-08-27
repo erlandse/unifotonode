@@ -87,6 +87,20 @@ export async function insertRow(rowData, id) {
   return q;
 }
 
+export async function insertPost(data) {
+  let sqlString = "insert into usd_uio.billedbase(id,jsonfield) VALUES(" + data.foto_kort_id + ",$molle$" + JSON.stringify(data.content, null, 2) + "$molle$)";
+  let q = await connection.query(sqlString);
+  let t = await writeElastic(data);
+  let p: any = new Object();
+  p.postgres = q;
+  p.elastic = t;
+  return JSON.stringify(p);
+}
+
+
+
+
+
 /*
 async function fwriteElastic(body) {
   var formData: any = new Object();
@@ -254,6 +268,26 @@ export async function getCall(fullUrl:string,req,res) {
 
     };
     const result = await fetch('http://itfds-prod03.uio.no/elasticapi/'+resturl, (mitObjekt));
+    var answer = await result.text();
+  }
+  catch (error) {
+    console.log("error: " + error);
+  }
+  return JSON.parse(answer);
+}
+
+export async function getAny(body) {
+  try {
+    const mitObjekt = {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json, text/plain',
+        'Content-Type': 'application/json'
+      }
+
+    };
+    const result = await fetch(body.url, (mitObjekt));
+
     var answer = await result.text();
   }
   catch (error) {

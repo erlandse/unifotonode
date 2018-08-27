@@ -15,6 +15,7 @@ const tools = require("./tools");
 const transform = require("./transform");
 const pg = require("pg");
 const requestIp = require('request-ip');
+var exec = require('child_process').exec;
 //import * as nf from 'node-fetch';
 var app = express();
 var result;
@@ -68,6 +69,17 @@ const save = (req, res) => __awaiter(this, void 0, void 0, function* () {
     let q = yield transform.updatePostInPostgres(req.body);
     res.send(q);
 });
+app.post('/insertPost', function (req, res) {
+    //  console.log(JSON.stringify(req.body,null,2));
+    saveNew(req, res);
+    /*  let q= transform.updatePostInPostgres(req.body);
+      console.log(q);
+      res.send(q);*/
+});
+const saveNew = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    let q = yield transform.insertPost(req.body);
+    res.send(q);
+});
 /*
 app.get('/test', function (req, res) {
 //  console.log(JSON.stringify(req,null,2));
@@ -87,7 +99,7 @@ const get = (fullUrl, req, res) => __awaiter(this, void 0, void 0, function* () 
     res.send(q);
 });
 app.post('/PassPost', function (req, res) {
-    //  console.log(JSON.stringify(req.body,null,2));
+    console.log(JSON.stringify(req.body, null, 2));
     postElastic(req, res);
     /*  let q= transform.updatePostInPostgres(req.body);
       console.log(q);
@@ -95,6 +107,22 @@ app.post('/PassPost', function (req, res) {
 });
 const postElastic = (req, res) => __awaiter(this, void 0, void 0, function* () {
     let q = yield transform.postElastic(req.body);
+    res.send(q);
+});
+app.post('/runCmd', function (req, res) {
+    exec(req.body.command, function (error, stdout, stderr) {
+        res.send(stdout);
+    });
+});
+app.post('/GetAnyURL', function (req, res) {
+    console.log(JSON.stringify(req.body, null, 2));
+    GetAnyURL(req, res);
+    /*  let q= transform.updatePostInPostgres(req.body);
+      console.log(q);
+      res.send(q);*/
+});
+const GetAnyURL = (req, res) => __awaiter(this, void 0, void 0, function* () {
+    let q = yield transform.getAny(req.body);
     res.send(q);
 });
 //# sourceMappingURL=Server.js.map

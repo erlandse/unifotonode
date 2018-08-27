@@ -7,6 +7,7 @@ import * as transform from './transform';
 import * as pg from 'pg';
 import * as fs from 'fs';
 const requestIp = require('request-ip');
+var exec = require('child_process').exec;
 //import * as nf from 'node-fetch';
 
 var app = express();
@@ -81,6 +82,20 @@ const save = async (req,res) => {
   res.send(q);
  }
 
+ app.post('/insertPost', function (req, res) {
+  //  console.log(JSON.stringify(req.body,null,2));
+    saveNew(req,res);
+  /*  let q= transform.updatePostInPostgres(req.body);
+    console.log(q);
+    res.send(q);*/
+  
+  })
+  
+  const saveNew = async (req,res) => {
+    let q= await transform.insertPost(req.body);
+    res.send(q);
+   }
+  
 
  /*
 app.get('/test', function (req, res) {
@@ -107,7 +122,7 @@ app.get('/*', function (req,res,next) {
   
 
 app.post('/PassPost', function (req, res) {
-  //  console.log(JSON.stringify(req.body,null,2));
+    console.log(JSON.stringify(req.body,null,2));
     postElastic(req,res);
   /*  let q= transform.updatePostInPostgres(req.body);
     console.log(q);
@@ -121,3 +136,23 @@ app.post('/PassPost', function (req, res) {
     res.send(q);
    }
   
+   app.post('/runCmd', function (req, res) {
+     exec(req.body.command,function(error,stdout,stderr){
+       res.send (stdout);
+     })
+ 
+  })
+
+  app.post('/GetAnyURL', function (req, res) {
+    console.log(JSON.stringify(req.body,null,2));
+    GetAnyURL(req,res);
+  /*  let q= transform.updatePostInPostgres(req.body);
+    console.log(q);
+    res.send(q);*/
+  
+  })
+  const GetAnyURL = async (req,res) => {
+    let q= await transform.getAny(req.body);
+    res.send(q);
+   }
+
