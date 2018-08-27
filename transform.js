@@ -97,6 +97,18 @@ function insertRow(rowData, id) {
     });
 }
 exports.insertRow = insertRow;
+function insertPost(data) {
+    return __awaiter(this, void 0, void 0, function* () {
+        let sqlString = "insert into usd_uio.billedbase(id,jsonfield) VALUES(" + data.foto_kort_id + ",$molle$" + JSON.stringify(data.content, null, 2) + "$molle$)";
+        let q = yield connection.query(sqlString);
+        let t = yield writeElastic(data);
+        let p = new Object();
+        p.postgres = q;
+        p.elastic = t;
+        return JSON.stringify(p);
+    });
+}
+exports.insertPost = insertPost;
 /*
 async function fwriteElastic(body) {
   var formData: any = new Object();
@@ -264,4 +276,24 @@ function getCall(fullUrl, req, res) {
     });
 }
 exports.getCall = getCall;
+function getAny(body) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const mitObjekt = {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json, text/plain',
+                    'Content-Type': 'application/json'
+                }
+            };
+            const result = yield node_fetch_1.default(body.url, (mitObjekt));
+            var answer = yield result.text();
+        }
+        catch (error) {
+            console.log("error: " + error);
+        }
+        return JSON.parse(answer);
+    });
+}
+exports.getAny = getAny;
 //# sourceMappingURL=transform.js.map
